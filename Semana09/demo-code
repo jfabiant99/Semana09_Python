@@ -1,0 +1,61 @@
+CONEXION
+
+import mysql.connector
+
+mydb=mysql.connector.connect(
+host="localhost",
+user="root",
+passwd="",
+database="tienda"
+)
+
+mycursor=mydb.cursor()
+
+LISTAR
+
+sql="select * from producto"
+mycursor.execute(sql)
+
+myresult = mycursor.fetchall()
+
+for x in myresult:
+	print(x)
+	
+
+AGREGAR
+
+id = input('Ingrese el id: ')
+nombre = input('Ingrese nombre: ')
+precio = float(input('Ingrese precio: '))
+stock = int(input('Stock: '))
+
+sql = "insert into producto (id, nombre, precio, stock) values (upper(%s), %s, %s, %s)"
+val = (id, nombre, precio, stock)
+mycursor.execute(sql, val)
+mydb.commit()
+print (mycursor.rowcount,"Producto registrado correctamente")
+
+
+ELIMINAR
+
+id = input("Ingrese codigo de producto a eliminar: ")
+sql = "delete from producto where id = %s"
+val = (id,)
+mycursor.execute(sql, val)
+mydb.commit()
+
+print ("Producto eliminado correctamente")
+
+ACTUALIZAR
+
+id = input('Ingrese el id del producto a actualizar: ')
+nombre = input('Ingrese el nuevo nombre: ')
+precio = float(input('Ingrese el nuevo precio: '))
+stock = int(input('Nuevo Stock: '))
+
+sql = "update producto set nombre = %s, precio = %s, stock = %s where id = %s"
+val = (nombre, precio, stock, id)
+mycursor.execute(sql, val)
+mydb.commit()
+
+print ("Producto actualizado correctamente")
